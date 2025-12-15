@@ -436,8 +436,9 @@ h2 {
 }
 
 .placeholder {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
+  opacity: 0;
 }
 
 /* Voting player list */
