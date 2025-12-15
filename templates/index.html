@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spotlight Shuffle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#020617" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1>Spotlight Shuffle</h1>
+      <p class="subtitle">Friends vote, the spotlight jumps, the tasks get silly</p>
+    </header>
+
+    <main class="card">
+
+      <!-- Home view -->
+      <section id="view-home" class="home-view">
+        <button class="primary-btn" id="btn-create">Create party</button>
+        <button class="secondary-btn" id="btn-join">Join party</button>
+
+        <div class="guide-scroll">
+          <div class="guide-block">
+            <h2 class="guide-title">
+              Read before play (estimated time to read: 1 minute)
+            </h2>
+
+            <p>
+              Each round you all answer fun questions like
+              In this party who is the most funny, kind, chaotic or stylish.
+              The person with most votes becomes the star of the round and does a small task.
+            </p>
+
+            <h3>Setup</h3>
+            <ul>
+              <li>Each player uses their own phone.</li>
+              <li>One player creates a party and shares the four digit code.</li>
+              <li>Everyone joins with the party code and enters a name.</li>
+              <li>The creator is the host who starts the rounds.</li>
+            </ul>
+
+            <h3>How a round works</h3>
+            <ol>
+              <li>The host taps Start round.</li>
+              <li>A question appears for everyone, for example who is the most kind.</li>
+              <li>Everyone votes for one person and taps Confirm, then votes are locked.</li>
+              <li>The player with the most votes becomes the star of the round.</li>
+              <li>
+                The star sees two task options.
+                They choose one and confirm.
+                Everyone sees what they picked.
+              </li>
+              <li>The host taps Next round when you are ready to continue.</li>
+            </ol>
+
+            <h3>Important rule</h3>
+            <ul>
+              <li>Keep things friendly and funny, do not use this to hurt anyone.</li>
+            </ul>
+
+            <h3>End of game</h3>
+            <p>
+              You can play as many rounds as you like.
+              Questions do not repeat inside the same party.
+              The ranking panel shows who has been the star most often.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Name entry view -->
+      <section id="view-name" class="hidden">
+        <h2>Enter your name</h2>
+        <p class="hint">
+          Party id <span id="name-party-id" class="pill"></span>
+        </p>
+        <label class="field-label" for="name-input">Your name</label>
+        <input
+          id="name-input"
+          class="text-input"
+          type="text"
+          maxlength="10"
+          placeholder="Ali"
+        />
+        <button class="primary-btn" id="btn-name-confirm">Continue</button>
+
+        <div id="name-error" class="result error hidden"></div>
+
+        <button class="link-btn" id="btn-back-name">Back</button>
+      </section>
+
+      <!-- Main game view -->
+      <section id="view-game" class="hidden">
+        <!-- Top bar -->
+        <div class="top-bar">
+          <div class="top-left">
+            <div class="party-pill">
+              Party <span id="top-party-id"></span>
+            </div>
+            <button class="ranking-btn" id="btn-ranking-toggle">
+              Ranking
+            </button>
+          </div>
+
+          <div class="top-center">
+            <div class="player-meta">
+              <div class="player-name" id="player-name-display"></div>
+              <div class="player-info-vertical">
+                <div class="player-line">
+                  <span class="player-label">Role:</span>
+                  <span id="player-role" class="player-value player-role-value">Player</span>
+                </div>
+                <div class="player-line">
+                  <span class="player-label">Stars:</span>
+                  <span id="player-stars" class="player-value">0</span>
+                </div>
+                <div class="player-line">
+                  <span class="player-label">Questions left:</span>
+                  <span id="questions-left" class="player-value">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="top-right">
+            <div class="timer-box">
+              <div id="status-label">Lobby</div>
+              <div id="status-value">Waiting</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ranking panel -->
+        <aside id="ranking-panel" class="ranking-panel">
+          <div class="ranking-header">
+            <span>Ranking</span>
+            <button id="btn-ranking-close" class="ranking-close">Close</button>
+          </div>
+
+          <ul id="ranking-list" class="ranking-list"></ul>
+
+          <div class="ranking-footer">
+            <button id="btn-exit" class="ranking-exit">Exit</button>
+          </div>
+        </aside>
+        <div id="ranking-backdrop" class="ranking-backdrop hidden"></div>
+
+        <!-- Main body -->
+        <div class="main-body">
+          <div class="main-section" id="main-section">
+            <p class="placeholder" id="main-placeholder">
+              Waiting for game state.
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom action button -->
+        <div class="bottom-actions">
+          <button id="action-button" class="primary-btn action-btn" disabled>
+            Waiting
+          </button>
+        </div>
+
+        <!-- Bottom info boxes -->
+        <div class="bottom-rules">
+          <div class="rule-box">
+            <div class="rule-label">Round info</div>
+            <div class="rule-text" id="info-primary">
+              Lobby
+            </div>
+          </div>
+          <div class="rule-box">
+            <div class="rule-label">Note</div>
+            <div class="rule-text" id="info-secondary">
+              Host starts the next round.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
