@@ -435,6 +435,13 @@ h2 {
   gap: 10px;
 }
 
+.task-result {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  opacity: 1;
+  margin-top: 6px;
+}
+
 .placeholder {
   font-size: 0.8rem;
   color: var(--text-muted);

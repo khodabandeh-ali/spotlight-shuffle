@@ -393,16 +393,18 @@ async def star_choose_task(req: StarChooseTaskRequest):
   chosen = rs.task_options[req.task_index]
   rs.selected_task = chosen
 
-  if rs.is_positive:
-    pool = party.available_positive_tasks
-  else:
-    pool = party.available_negative_tasks
-
+  pool = party.available_positive_tasks if rs.is_positive else party.available_negative_tasks
   if chosen in pool:
     pool.remove(chosen)
 
   party.state = "task_result"
-  return {"status": "ok"}
+
+  return {
+    "status": "ok",
+    "selected_task": chosen,
+    "star_player_id": rs.star_player_id,
+    "star_player_name": party.players[rs.star_player_id].name,
+  }
 
 
 @app.get("/api/party_state")

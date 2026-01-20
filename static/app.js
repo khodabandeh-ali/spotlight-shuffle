@@ -316,7 +316,7 @@ actionButton.addEventListener("click", async () => {
     return;
     }
 
-  if (currentActionMode === "choose_task") {
+    if (currentActionMode === "choose_task") {
     if (selectedTaskIndex === null) return;
     try {
       const res = await fetch("/api/star_choose_task", {
@@ -333,7 +333,31 @@ actionButton.addEventListener("click", async () => {
         alert(err.detail || "Could not choose task");
         return;
       }
-      setTimeout(refreshPartyState, 300);
+
+      const out = await res.json();
+
+      // Apply immediate local state so the star sees it right away
+      currentState = "task_result";
+      starPlayerId = out.star_player_id || starPlayerId;
+      starPlayerName = out.star_player_name || starPlayerName;
+
+      // Force next render by clearing the key
+      lastRenderKey = null;
+
+      // Render using a synthetic party_state shaped object
+      renderMainSection({
+        state: "task_result",
+        star_player_id: starPlayerId,
+        star_player_name: starPlayerName,
+        selected_task: out.selected_task,
+        question_text: null,
+        round_number: 0,
+      });
+
+      updateActionButtonState();
+
+      // Then pull fresh state for everyone
+      setTimeout(refreshPartyState, 200);
     } catch (e) {
       console.error(e);
       alert("Network problem while choosing task");
@@ -534,27 +558,28 @@ function renderMainSection(data) {
   }
 
   if (data.state === "task_result") {
-    const p1 = document.createElement("div");
-    p1.className = "question-title";
-    p1.textContent = "Result";
+  const p1 = document.createElement("div");
+  p1.className = "question-title";
+  p1.textContent = "Result";
 
-    const p2 = document.createElement("div");
-    p2.className = "question-text";
-    if (data.star_player_name && data.selected_task) {
-      p2.textContent = `${data.star_player_name} selected:`;
-      const p3 = document.createElement("p");
-      p3.className = "placeholder";
-      p3.textContent = data.selected_task;
-      mainSection.appendChild(p1);
-      mainSection.appendChild(p2);
-      mainSection.appendChild(p3);
-      return;
-    } else {
-      p2.textContent = "Waiting for host to start the next round.";
-      mainSection.appendChild(p1);
-      mainSection.appendChild(p2);
-      return;
-    }
+  const p2 = document.createElement("div");
+  p2.className = "question-text";
+
+  if (data.star_player_name && data.selected_task) {
+    p2.textContent = `${data.star_player_name} selected:`;
+    const p3 = document.createElement("p");
+    p3.className = "task-result";
+    p3.textContent = data.selected_task;
+    mainSection.appendChild(p1);
+    mainSection.appendChild(p2);
+    mainSection.appendChild(p3);
+    return;
+  }
+
+  p2.textContent = "Waiting for the task to load.";
+  mainSection.appendChild(p1);
+  mainSection.appendChild(p2);
+  return;
   }
 
   const p = document.createElement("p");
